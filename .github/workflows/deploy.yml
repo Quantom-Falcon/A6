@@ -2,26 +2,31 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]  # or your default branch name
+    branches: [ main ]       
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # 1. Check out the repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      # 2. Set up Node
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18      # use the version you prefer
 
-    - name: Install dependencies
-      run: npm install
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run tests
-      run: npm test
+      # 4. Run tests
+      - name: Run tests
+        run: npm test
 
-    - name: Trigger Render Deploy Hook
-      run: curl -X GET ${{ secrets.RENDER_DEPLOY_HOOK }}
+      # 5. Deploy to Render
+      - name: Trigger Render Deploy Hook
+        run: curl -X GET "https://api.render.com/deploy/srv-d1ip4vqdbo4c73f97iag?key=YXn-cqiGuD0"
